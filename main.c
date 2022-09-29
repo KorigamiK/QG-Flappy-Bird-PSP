@@ -5,18 +5,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-QGSprite_t bg;
-QGSprite_t base;
-QGSprite_t gameover;
-QGSprite_t pipe;
+QGSprite_t bg, base, gameover, pipe;
 QGSprite_t score[10];
+QGSprite_t bird[3];
+
 QGTimer timer;
 
-QGSprite_t bird[3];
 float bird_y;
 float vel_y;
-bool started;
-bool dead;
+bool started, dead;
 int current_score;
 
 int curr_anim = 0;
@@ -58,17 +55,11 @@ void reset_game() {
     vel_y = 0.0f;
     current_score = 0;
 
-    pipes[0].x = 512;
-    pipes[0].y = 96 + rand() % 144;
-    pipes[0].active = true;
-
-    pipes[1].x = 512 + 192;
-    pipes[1].y = 96 + rand() % 144;
-    pipes[1].active = true;
-
-    pipes[2].x = 512 + 384;
-    pipes[2].y = 96 + rand() % 144;
-    pipes[2].active = true;
+    for(int i = 0; i < 3; i++){
+        pipes[i].x = 512 + 192 * i;
+        pipes[i].y = 96 + rand() % 144;
+        pipes[i].active = true;
+    }
 }
 
 void animation_update() {
@@ -117,10 +108,8 @@ void update(double dt) {
         }
         
     } else {
-        // Stops the scrolling effect
         QuickGame_Timer_Reset(&timer);
 
-        // Reset Game
         if(QuickGame_Button_Pressed(PSP_CTRL_CROSS)) 
             reset_game();
     }
@@ -154,15 +143,7 @@ void draw_score(){
     }
 }
 
-void draw() {
-    QuickGame_Graphics_Start_Frame();
-    QuickGame_Graphics_Clear();
-
-    QuickGame_Sprite_Draw(bg);
-    draw_base_scroll();
-
-    QuickGame_Sprite_Draw(bird[curr_anim]);
-
+void draw_pipes(){
     for(int i = 0; i < 3; i++){
         pipe->transform.position.x = pipes[i].x;
         pipe->transform.position.y = pipes[i].y - 128 - 40;
@@ -181,6 +162,16 @@ void draw() {
             dead = true;
         }
     }
+}
+
+void draw() {
+    QuickGame_Graphics_Start_Frame();
+    QuickGame_Graphics_Clear();
+
+    QuickGame_Sprite_Draw(bg);
+    draw_base_scroll();
+    QuickGame_Sprite_Draw(bird[curr_anim]);
+    draw_pipes();
 
     if(dead)
         QuickGame_Sprite_Draw(gameover);
@@ -191,71 +182,37 @@ void draw() {
 }
 
 void load_sprites() {
-    QGTexInfo bgTexInfo = {
-        .filename = "./assets/sprites/bg.png",
-        .flip = true,
-        .vram = 0
-    };
+    QGTexInfo bgTexInfo = {.filename = "./assets/sprites/bg.png", .flip = true, .vram = 0 };
     bg = QuickGame_Sprite_Create_Contained(240, 128 + 64, 512, 512, bgTexInfo);
 
-    QGTexInfo baseTexInfo = {
-        .filename = "./assets/sprites/slide.png",
-        .flip = true,
-        .vram = 0
-    };
+    QGTexInfo baseTexInfo = { .filename = "./assets/sprites/slide.png", .flip = true, .vram = 0 };
     base = QuickGame_Sprite_Create_Contained(240, 16, 256, 64, baseTexInfo);
 
-    QGTexInfo b1 = {
-        .filename = "./assets/sprites/bird/down.png",
-        .flip = true,
-        .vram = 0
-    };
+    QGTexInfo b1 = { .filename = "./assets/sprites/bird/down.png", .flip = true, .vram = 0 };
     bird[0] = QuickGame_Sprite_Create_Contained(160, 136, 64, 32, b1);
-    bird[0]->aabb_size.x = 32;
-    bird[0]->aabb_size.y = 20;
 
-    QGTexInfo b2 = {
-        .filename = "./assets/sprites/bird/idle.png",
-        .flip = true,
-        .vram = 0
-    };
+    QGTexInfo b2 = { .filename = "./assets/sprites/bird/idle.png", .flip = true, .vram = 0 };
     bird[1] = QuickGame_Sprite_Create_Contained(160, 136, 64, 32, b2);
-    bird[1]->aabb_size.x = 32;
-    bird[1]->aabb_size.y = 20;
 
-    QGTexInfo b3 = {
-        .filename = "./assets/sprites/bird/up.png",
-        .flip = true,
-        .vram = 0
-    };
+    QGTexInfo b3 = { .filename = "./assets/sprites/bird/up.png", .flip = true, .vram = 0 };
     bird[2] = QuickGame_Sprite_Create_Contained(160, 136, 64, 32, b3);
-    bird[2]->aabb_size.x = 32;
-    bird[2]->aabb_size.y = 20;
 
-    QGTexInfo go = {
-        .filename = "./assets/sprites/gameover.png",
-        .flip = true,
-        .vram = 0
-    };
+    for(int i = 0; i < 3; i++){
+        bird[i]->aabb_size.x = 32;
+        bird[i]->aabb_size.y = 20;
+    }
+
+    QGTexInfo go = { .filename = "./assets/sprites/gameover.png", .flip = true, .vram = 0 };
     gameover = QuickGame_Sprite_Create_Contained(240, 136, 256, 64, go);
 
-    QGTexInfo p = {
-        .filename = "./assets/sprites/pipe.png",
-        .flip = true,
-        .vram = 0
-    };
+    QGTexInfo p = { .filename = "./assets/sprites/pipe.png", .flip = true, .vram = 0 };
     pipe = QuickGame_Sprite_Create_Contained(0, 0, 64, 256, p);
 
     for(int i = 0; i < 10; i++){
         char filename[256];
-
         sprintf(filename, "./assets/sprites/count/%d.png", i);
 
-        QGTexInfo sc = {
-            .filename = filename,
-            .flip = true,
-            .vram = 0
-        };
+        QGTexInfo sc = { .filename = filename, .flip = true, .vram = 0 };
         score[i] = QuickGame_Sprite_Create_Contained(240, 136, 32, 64, sc);
     }
 }
