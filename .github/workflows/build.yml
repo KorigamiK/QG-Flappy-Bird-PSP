@@ -10,9 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     container: pspdev/pspdev:latest
     steps:
-      - name: Install dependencies
-          run: |
-            apk add cmake
+      - name: "Install dependencies"
+        run: apk add cmake
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
