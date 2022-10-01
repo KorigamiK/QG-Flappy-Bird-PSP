@@ -2,9 +2,8 @@ name: Build
 
 on:
   push:
-    paths:
-      - **.c
-
+    branches:
+      - master
 jobs:
   PSP:
     runs-on: ubuntu-latest
