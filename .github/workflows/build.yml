@@ -16,7 +16,7 @@ jobs:
       - name: Checkout submodules
         run: |
           git config --global --add safe.directory /__w/QG-Flappy-Bird-PSP/QG-Flappy-Bird-PSP
-          git submodule update --init --recursive
+          git submodule update --force --recursive --init --remote
       - name: Build
         run: ./build_psp.sh --package
       - name: Upload artifact
