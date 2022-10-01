@@ -10,8 +10,12 @@ add_subdirectory(./QuickGame/ QuickGame)
 target_link_libraries(flappy PUBLIC QuickGame)
 target_include_directories(flappy PUBLIC QuickGame/include)
 
-create_pbp_file(
-    TARGET flappy
-    TITLE Flappy Bird PSP
-    BUILD_PRX ON
-)
+if (PLATFORM_PSP)
+    create_pbp_file(
+        TARGET flappy
+        TITLE Flappy Bird PSP
+        BUILD_PRX ON
+    )
+endif()
+
+file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
