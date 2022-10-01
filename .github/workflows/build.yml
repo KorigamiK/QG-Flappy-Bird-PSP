@@ -13,6 +13,8 @@ jobs:
         run: apk add cmake
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+            submodules: recursive
       - name: Build
         run: ./build_psp.sh --package
       - name: Upload artifact
