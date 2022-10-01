@@ -10,13 +10,11 @@ jobs:
     container: pspdev/pspdev:latest
     steps:
       - name: "Install dependencies"
-        run: apk add cmake
+        run: apk add cmake git
       - name: Checkout
         uses: actions/checkout@v2
       - name: Checkout submodules
-        uses: srt32/git-actions@v0.0.3
-        with:
-          args: git submodule update --init --recursive
+        run: git submodule update --init --recursive
       - name: Build
         run: ./build_psp.sh --package
       - name: Upload artifact
