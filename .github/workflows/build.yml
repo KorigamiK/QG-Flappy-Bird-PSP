@@ -1,0 +1,32 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  PSP:
+    runs-on: ubuntu-latest
+    container: pspdev/pspdev:latest
+    steps:
+      - name: "Install dependencies"
+        run: apk add cmake git zip
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Checkout submodules
+        run: |
+          git config --global --add safe.directory /__w/QG-Flappy-Bird-PSP/QG-Flappy-Bird-PSP
+          git submodule update --force --recursive --init --remote
+      - name: Build
+        run: ./build_psp.sh --package
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/psp/*.zip
+          body: |
+            This is an automated release of the latest version of QG-Flappy-Bird-PSP.
+          prerelease: true
+          tag_name: Flappy-PSP
+        env:
+        
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
