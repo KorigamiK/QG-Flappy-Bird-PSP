@@ -14,7 +14,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Checkout submodules
-        run: git submodule update --init --recursive
+        uses: srt32/git-actions@v0.0.3
+        with:
+          args: git submodule update --init --recursive
       - name: Build
         run: ./build_psp.sh --package
       - name: Upload artifact
