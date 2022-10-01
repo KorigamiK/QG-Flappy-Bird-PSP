@@ -1,0 +1,24 @@
+name: Build
+
+on:
+  push:
+    paths:
+      - **.c
+
+jobs:
+  PSP:
+    runs-on: ubuntu-latest
+    container: pspdev/pspdev:latest
+    steps:
+      - name: Install dependencies
+          run: |
+            apk add cmake
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: ./build_psp.sh
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Flappy
+          path: build/psp/*.zip
