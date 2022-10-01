@@ -57,7 +57,7 @@ void reset_game() {
 
     for(int i = 0; i < 3; i++){
         pipes[i].x = 512 + 192 * i;
-        pipes[i].y = 96 + rand() % 144;
+        pipes[i].y = 96 + rand() % 128;
         pipes[i].active = true;
     }
 }
@@ -101,7 +101,7 @@ void update(double dt) {
 
                 if(pipes[i].x < -32){
                     pipes[i].x += 384 + 192;
-                    pipes[i].y = 96 + rand() % 144;
+                    pipes[i].y = 96 + rand() % 128;
                     pipes[i].active = true;
                 }
             }
@@ -169,13 +169,12 @@ void draw() {
     QuickGame_Graphics_Clear();
 
     QuickGame_Sprite_Draw(bg);
+    draw_pipes();
     draw_base_scroll();
     QuickGame_Sprite_Draw(bird[curr_anim]);
-    draw_pipes();
 
     if(dead)
         QuickGame_Sprite_Draw(gameover);
-
     draw_score();
 
     QuickGame_Graphics_End_Frame(true);
