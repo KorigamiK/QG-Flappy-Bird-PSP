@@ -65,11 +65,11 @@ void reset_game() {
 void animation_update() {
     bird[curr_anim]->transform.position.y = bird_y;
     if(vel_y < -20.0f)
-        bird[curr_anim]->transform.rotation = 30.0f;
+        bird[curr_anim]->transform.rotation = -30.0f;
     else if (vel_y >= -20.0f && vel_y <= 20.0f)
         bird[curr_anim]->transform.rotation = 0.0f;
     else if (vel_y > 20.0f)
-        bird[curr_anim]->transform.rotation = -30.0f;
+        bird[curr_anim]->transform.rotation = 30.0f;
 }
 
 void update(double dt) {
@@ -81,12 +81,12 @@ void update(double dt) {
 
         if(QuickGame_Button_Pressed(PSP_CTRL_CROSS)){
             started = true;
-            vel_y = -96.0f * 2.0f;
+            vel_y = 192.0f;
         }
 
         if(started) {
-            vel_y += 256.0f * dt * 2.0f;
-            bird_y -= vel_y * dt;
+            vel_y -= 512.0f * dt;
+            bird_y += vel_y * dt;
 
             if(bird_y < 48)
                 dead = true;
