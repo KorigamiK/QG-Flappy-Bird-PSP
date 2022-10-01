@@ -25,8 +25,7 @@ jobs:
           files: build/psp/*.zip
           body: |
             This is an automated release of the latest version of QG-Flappy-Bird-PSP.
-          tag_name: ${{ github.sha }}
           prerelease: true
-          name: Flappy PSP ${{ github.sha }}
+          tag_name: Flappy-PSP
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
