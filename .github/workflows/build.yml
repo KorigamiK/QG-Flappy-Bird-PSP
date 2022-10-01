@@ -10,7 +10,7 @@ jobs:
     container: pspdev/pspdev:latest
     steps:
       - name: "Install dependencies"
-        run: apk add cmake git
+        run: apk add cmake git zip
       - name: Checkout
         uses: actions/checkout@v2
       - name: Checkout submodules
