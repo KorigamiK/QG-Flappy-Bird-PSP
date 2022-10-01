@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
-        run: ./build_psp.sh
+        run: ./build_psp.sh --package
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
