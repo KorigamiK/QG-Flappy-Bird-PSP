@@ -14,6 +14,7 @@ if (PLATFORM_PSP)
     create_pbp_file(
         TARGET flappy
         TITLE Flappy Bird PSP
+	ICON_PATH "${CMAKE_CURRENT_SOURCE_DIR}/assets/sprites/bird/idle.png"
         BUILD_PRX ON
     )
 endif()
